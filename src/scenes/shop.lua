@@ -30,7 +30,9 @@ local function say_once(scene,key,text)
   scene[key]=true
   scene.message=text
   scene.message_time=240
+  return true
  end
+ return false
 end
 
 local function say_next(scene,key,thoughts)
@@ -40,7 +42,9 @@ local function say_next(scene,key,thoughts)
   scene[key]=index
   scene.message=thoughts[index]
   scene.message_time=240
+  return true
  end
+ return false
 end
 
 function scenes.shop.enter()
@@ -57,6 +61,8 @@ function scenes.shop.enter()
  scene.close_line=0
  scene.description_line=0
  scene.saw_address=false
+ scene.saw_reminder=false
+ scene.pointless_clicks=0
  scene.message="cpt po, npk nfztastjl, oaep tpmDlp oahatD luqjtD."
  scene.message_time=300
 end
@@ -89,23 +95,39 @@ function scenes.shop.update()
  local clicked=(band(buttons,1)>0 and band(scene.buttons,1)==0) or btnp(4)
  scene.buttons=buttons
  if clicked then
+  local responded=false
   local page_x=scene.cursor_x+scene.scroll_x
   local page_y=scene.cursor_y+scene.scroll_y
   if inside(page_x,page_y,shop_art.buy) then
    if not scene.purchased then
-    say_once(scene,"purchased","ialai pvprnmfo")
+    responded=say_once(scene,"purchased","ialai pvprnmfo")
     audio.play(0)
    else
     dismiss(scene)
    end
   elseif inside(page_x,page_y,shop_art.close) then
-   say_next(scene,"close_line",close_thoughts)
+   responded=say_next(scene,"close_line",close_thoughts)
   elseif inside(page_x,page_y,shop_art.browser_address) then
-   say_once(scene,"saw_address","dmacopf of ccpejtD aodmjksluF {... j }.")
+   responded=say_once(scene,"saw_address","dmacopf of ccpejtD aodmjksluF {... j }.")
   elseif inside(page_x,page_y,shop_art.description) then
-   say_next(scene,"description_line",description_thoughts)
+   responded=say_next(scene,"description_line",description_thoughts)
   else
    dismiss(scene)
+  end
+
+  if responded then
+   scene.pointless_clicks=0
+  elseif not scene.purchased and
+     scene.close_line>=#close_thoughts and
+     scene.description_line>=#description_thoughts and
+     scene.saw_address and not scene.saw_reminder then
+   scene.pointless_clicks+=1
+   if scene.pointless_clicks>=3 then
+    say_once(
+     scene,"saw_reminder",
+     "G, lahftsG, iabCm, ytp G wptfm... a, ea, oahatD lopqlu luqjtD."
+    )
+   end
   end
  end
 

@@ -1,0 +1,145 @@
+{
+  "v": 3,
+  "attachments": {},
+  "boards": {
+    "Chat.dc.html": {
+      "h": 512,
+      "is_interactive": true,
+      "title": "Chat A - radio log",
+      "w": 512,
+      "x": 0,
+      "y": 0
+    },
+    "Chat-B.dc.html": {
+      "h": 512,
+      "title": "Chat B - bubbles",
+      "w": 512,
+      "x": 592,
+      "y": 0
+    },
+    "Story-Map.dc.html": {
+      "h": 512,
+      "is_interactive": true,
+      "title": "Story map (the graph)",
+      "w": 512,
+      "x": 1184,
+      "y": 0
+    },
+    "Waiting.dc.html": {
+      "h": 512,
+      "is_interactive": true,
+      "title": "Waiting (real time)",
+      "w": 512,
+      "x": 1776,
+      "y": 0
+    },
+    "Offline.dc.html": {
+      "h": 512,
+      "is_interactive": true,
+      "title": "No route",
+      "w": 512,
+      "x": 2368,
+      "y": 0
+    },
+    "Main.dc.html": {
+      "h": 512,
+      "is_interactive": true,
+      "title": "Net map (Dijkstra)",
+      "w": 512,
+      "x": 0,
+      "y": 900
+    },
+    "Dijkstra.dc.html": {
+      "h": 512,
+      "is_interactive": true,
+      "title": "Dijkstra, step by step",
+      "w": 512,
+      "x": 592,
+      "y": 900
+    },
+    "Hops.dc.html": {
+      "h": 512,
+      "title": "Managed flood (how a hop works)",
+      "w": 512,
+      "x": 1184,
+      "y": 900
+    },
+    "Node-Card.dc.html": {
+      "h": 512,
+      "title": "Node info",
+      "w": 512,
+      "x": 1776,
+      "y": 900
+    },
+    "Codex.dc.html": {
+      "h": 512,
+      "title": "Algo codex",
+      "w": 512,
+      "x": 0,
+      "y": 1700
+    },
+    "Kit.dc.html": {
+      "h": 560,
+      "title": "Style kit",
+      "w": 880,
+      "x": 592,
+      "y": 1700
+    }
+  },
+  "createdOnFiles": {
+    "at": "2026-09-17T09:00:00Z",
+    "v": 1
+  },
+  "designSystems": [],
+  "launch": {
+    "view": "canvas"
+  },
+  "notes": {
+    "n1": {
+      "color": "green",
+      "text": "Lifeline-вижен:\n\n- Ядро игры - переписка с MIRA. Граф теперь карта сюжета: узлы = сцены, рёбра = выборы, ярким подсвечена пройденная ветка, X1 - мёртвый конец.\n- Мештастик работает как драматургия: задержка ответа, NO ACK, лимит хопов, батарея. Reply стоит байтов, длинные фразы дороже.\n- Chat A и Chat B - два варианта вида одного экрана, выбери один. A - радио-лог, B - пузыри.\n- Второй ряд - сетевой слой из прошлой версии, оставил как запас и подкрутил под сюжет (E теперь узел MIRA).\n- Текст латиницей: встроенный шрифт pico-8 без кириллики.",
+      "w": 400,
+      "x": 2960,
+      "y": 900
+    },
+    "t1": {
+      "kind": "title1",
+      "maxW": 2880,
+      "text": "LIFELINE CORE - thread, waiting, story map",
+      "w": 240,
+      "x": 0,
+      "y": -300
+    },
+    "t2": {
+      "kind": "title1",
+      "maxW": 2288,
+      "text": "NET LAYER - mesh map and algorithms (kept as backup)",
+      "w": 240,
+      "x": 0,
+      "y": 640
+    },
+    "t3": {
+      "kind": "title1",
+      "maxW": 1472,
+      "text": "REFERENCE",
+      "w": 240,
+      "x": 0,
+      "y": 1440
+    }
+  },
+  "order": [
+    "Chat.dc.html",
+    "Chat-B.dc.html",
+    "Story-Map.dc.html",
+    "Waiting.dc.html",
+    "Offline.dc.html",
+    "Main.dc.html",
+    "Dijkstra.dc.html",
+    "Hops.dc.html",
+    "Node-Card.dc.html",
+    "Codex.dc.html",
+    "Kit.dc.html"
+  ],
+  "pages": [],
+  "title": "MESHNET - pico-8 Lifeline"
+}

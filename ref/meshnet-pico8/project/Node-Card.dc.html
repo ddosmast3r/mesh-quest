@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&display=swap">
+  <style>
+    body { margin: 0; background: #000000; font-family: 'Silkscreen', ui-monospace, monospace; -webkit-font-smoothing: none; }
+    button { font-family: 'Silkscreen', ui-monospace, monospace; cursor: pointer; }
+    a { color: #00E436; } a:hover { color: #008751; }
+  </style>
+</helmet>
+<div style="width: 512px; height: 512px; box-sizing: border-box; background: #000000; position: relative; overflow: hidden;">
+
+  <div style="position: absolute; left: 0; top: 0; width: 512px; height: 40px; box-sizing: border-box; border-bottom: 4px solid #008751; display: flex; align-items: center; justify-content: space-between; padding: 0 12px;">
+    <div style="font-size: 16px; color: #00E436;">NODE INFO <span style="color: #008751;">// 04 OF 06</span></div>
+    <div style="font-size: 16px; color: #008751;">d=22 FROM HOME</div>
+  </div>
+
+  <div style="position: absolute; left: 0; top: 40px; width: 512px; height: 472px; box-sizing: border-box; padding: 16px; display: flex; flex-direction: column; gap: 16px;">
+
+    <div style="display: flex; gap: 16px; align-items: flex-start;">
+      <div style="flex-shrink: 0; width: 128px; height: 128px; box-sizing: border-box; border: 4px solid #008751; background-image: repeating-linear-gradient(90deg, #008751 0 1px, transparent 1px 16px), repeating-linear-gradient(0deg, #008751 0 1px, transparent 1px 16px); display: flex; align-items: center; justify-content: center;">
+        <div style="font-size: 16px; color: #00E436; background: #000000; padding: 4px 6px; text-align: center; line-height: 1.4;">[SPRITE<br>32x32]</div>
+      </div>
+      <div style="flex-grow: 1; display: flex; flex-direction: column; gap: 10px;">
+        <div style="font-size: 32px; color: #00E436;">TOWER</div>
+        <div style="display: flex; gap: 8px;">
+          <div style="font-size: 16px; color: #000000; background: #00E436; padding: 2px 8px;">ROUTER</div>
+          <div style="font-size: 16px; color: #008751; border: 4px solid #008751; padding: 0 6px;">SOLAR</div>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 4px;">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <div style="width: 56px; font-size: 16px; color: #008751;">BAT</div>
+            <div style="width: 120px; height: 16px; box-sizing: border-box; border: 4px solid #008751; padding: 0;">
+              <div style="width: 88px; height: 8px; background: #00E436;"></div>
+            </div>
+            <div style="font-size: 16px; color: #00E436;">88%</div>
+          </div>
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <div style="width: 56px; font-size: 16px; color: #008751;">SNR</div>
+            <div style="width: 120px; height: 16px; box-sizing: border-box; border: 4px solid #008751;">
+              <div style="width: 96px; height: 8px; background: #00E436;"></div>
+            </div>
+            <div style="font-size: 16px; color: #00E436;">-5DB</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="box-sizing: border-box; border: 4px solid #008751; padding: 12px; display: flex; flex-direction: column; gap: 8px;">
+      <div style="font-size: 16px; color: #008751;">WHY IT MATTERS</div>
+      <div style="font-size: 16px; color: #00E436; line-height: 1.5; text-wrap: pretty;">TOWER WENT QUIET AT 19:26. IT IS THE ONLY SHORT ROUTE TO MIRA. WITHOUT IT SHE IS 4 HOPS OUT AND THE LIMIT IS 3.</div>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 8px;">
+      <div style="font-size: 16px; color: #008751;">LINKS</div>
+      <div style="display: flex; flex-direction: column; gap: 6px;">
+        <div style="display: flex; justify-content: space-between; font-size: 16px; color: #00E436;"><span>RIDGE</span><span>1 KM</span></div>
+        <div style="display: flex; justify-content: space-between; font-size: 16px; color: #00E436;"><span>CITY</span><span>2 KM</span></div>
+        <div style="display: flex; justify-content: space-between; font-size: 16px; color: #008751;"><span>HILL</span><span>12 KM</span></div>
+      </div>
+    </div>
+
+    <div style="margin-top: auto; display: flex; gap: 12px;">
+      <button style="flex-grow: 1; height: 44px; font-size: 16px; color: #000000; background: #00E436; border: 4px solid #00E436;">Z &nbsp; PING NODE</button>
+      <button style="flex-grow: 1; height: 44px; font-size: 16px; color: #008751; background: #000000; border: 4px solid #008751;">X &nbsp; BACK</button>
+    </div>
+
+  </div>
+
+</div>
+</x-dc>
+<script data-dc-script data-props='{"$preview":{"width":512,"height":512}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>

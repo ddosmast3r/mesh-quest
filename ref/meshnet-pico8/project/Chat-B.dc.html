@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&display=swap">
+  <style>
+    body { margin: 0; background: #000000; font-family: 'Silkscreen', ui-monospace, monospace; -webkit-font-smoothing: none; }
+    button { font-family: 'Silkscreen', ui-monospace, monospace; cursor: pointer; }
+    button:hover { background: #008751; color: #000000; }
+    a { color: #00E436; } a:hover { color: #008751; }
+  </style>
+</helmet>
+<div style="width: 512px; height: 512px; box-sizing: border-box; background: #000000; position: relative; overflow: hidden;">
+
+  <div style="position: absolute; left: 0; top: 0; width: 512px; height: 48px; box-sizing: border-box; border-bottom: 4px solid #008751; display: flex; align-items: center; justify-content: space-between; padding: 0 12px;">
+    <div style="display: flex; align-items: baseline; gap: 12px;">
+      <div style="font-size: 24px; color: #00E436;">MIRA</div>
+      <div style="font-size: 16px; color: #008751;">3 HOPS</div>
+    </div>
+    <div style="display: flex; align-items: center; gap: 12px;">
+      <div style="display: flex; align-items: flex-end; gap: 4px;">
+        <div style="width: 8px; height: 8px; background: #00E436;"></div>
+        <div style="width: 8px; height: 14px; background: #00E436;"></div>
+        <div style="width: 8px; height: 20px; background: #00E436;"></div>
+        <div style="width: 8px; height: 26px; background: #000000; border: 2px solid #008751; box-sizing: border-box;"></div>
+        <div style="width: 8px; height: 32px; background: #000000; border: 2px solid #008751; box-sizing: border-box;"></div>
+      </div>
+      <div style="display: flex; align-items: center; gap: 4px;">
+        <div style="width: 36px; height: 16px; box-sizing: border-box; border: 4px solid #008751; padding: 0;">
+          <div style="width: 11px; height: 8px; background: #00E436;"></div>
+        </div>
+        <div style="font-size: 16px; color: #008751;">41%</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="position: absolute; left: 0; top: 48px; width: 512px; height: 300px; box-sizing: border-box; padding: 10px 12px; display: flex; flex-direction: column; gap: 10px;">
+
+    <div style="display: flex; flex-direction: column; gap: 2px; align-items: flex-start; max-width: 380px;">
+      <div style="box-sizing: border-box; border: 4px solid #008751; padding: 8px; font-size: 16px; color: #00E436; line-height: 1.4; text-wrap: pretty;">THE RIDGE NODE IS DEAD. I CAN SEE ITS PANEL FROM HERE. SNOW.</div>
+      <div style="font-size: 16px; color: #008751;">19:04 - 2 HOPS</div>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 2px; align-items: flex-end; align-self: flex-end; max-width: 380px;">
+      <div style="box-sizing: border-box; background: #008751; padding: 8px; font-size: 16px; color: #000000; line-height: 1.4;">HOW MUCH BATTERY DO YOU HAVE?</div>
+      <div style="font-size: 16px; color: #008751;">19:06 - ACK</div>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 2px; align-items: flex-start; max-width: 380px;">
+      <div style="box-sizing: border-box; border: 4px solid #008751; padding: 8px; font-size: 16px; color: #00E436; line-height: 1.4; text-wrap: pretty;">41%. TOWER IS 12 KM UPHILL, THE FARM IS 15 DOWNHILL.</div>
+      <div style="font-size: 16px; color: #008751;">19:22 - 3 HOPS</div>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 2px; align-items: flex-end; align-self: flex-end; max-width: 380px;">
+      <div style="box-sizing: border-box; border: 4px dashed #008751; padding: 8px; font-size: 16px; color: #008751; line-height: 1.4;">STAY PUT.</div>
+      <div style="font-size: 16px; color: #008751;">19:23 - NO ACK</div>
+    </div>
+
+  </div>
+
+  <div style="position: absolute; left: 0; top: 348px; width: 512px; height: 164px; box-sizing: border-box; border-top: 4px solid #008751; padding: 12px; display: flex; flex-direction: column; gap: 8px;">
+    <div style="display: flex; align-items: center; justify-content: space-between; font-size: 16px; color: #008751;">
+      <div>PICK ONE</div>
+      <div>PAYLOAD 237B</div>
+    </div>
+    <button style="display: flex; align-items: center; justify-content: space-between; gap: 12px; height: 52px; padding: 0 10px; font-size: 16px; text-align: left; color: #000000; background: #00E436; border: 4px solid #00E436;">
+      <span>&gt; TAKE THE TOWER ROUTE</span>
+      <span>22B</span>
+    </button>
+    <button style="display: flex; align-items: center; justify-content: space-between; gap: 12px; height: 52px; padding: 0 10px; font-size: 16px; text-align: left; color: #00E436; background: #000000; border: 4px solid #008751;">
+      <span>&gt; GO DOWNHILL TO THE FARM</span>
+      <span>24B</span>
+    </button>
+  </div>
+
+</div>
+</x-dc>
+<script data-dc-script data-props='{"$preview":{"width":512,"height":512}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {};
+  }
+}
+</script>
+</body>
+</html>

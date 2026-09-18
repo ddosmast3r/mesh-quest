@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&display=swap">
+  <style>
+    body { margin: 0; background: #000000; font-family: 'Silkscreen', ui-monospace, monospace; -webkit-font-smoothing: none; }
+    a { color: #00E436; } a:hover { color: #008751; }
+  </style>
+</helmet>
+<div style="width: 512px; height: 512px; box-sizing: border-box; background: #000000; position: relative; overflow: hidden;">
+
+  <div style="position: absolute; left: 0; top: 0; width: 512px; height: 40px; box-sizing: border-box; border-bottom: 4px solid #008751; display: flex; align-items: center; justify-content: space-between; padding: 0 12px;">
+    <div style="font-size: 16px; color: #00E436;">ALGO CODEX</div>
+    <div style="font-size: 16px; color: #008751;">6 / 6</div>
+  </div>
+
+  <div style="position: absolute; left: 0; top: 40px; width: 512px; height: 472px; box-sizing: border-box; padding: 12px; display: flex; flex-direction: column; gap: 10px;">
+
+    <sc-for list="{{entries}}" as="e" hint-placeholder-count="6">
+      <div style="display: flex; gap: 10px; align-items: flex-start;">
+        <div style="flex-shrink: 0; width: 24px; height: 24px; background: #008751; color: #000000; display: flex; align-items: center; justify-content: center; font-size: 16px;">{{e.n}}</div>
+        <div style="flex-grow: 1; display: flex; flex-direction: column; gap: 2px;">
+          <div style="display: flex; align-items: baseline; justify-content: space-between; gap: 8px;">
+            <div style="font-size: 16px; color: #00E436;">{{e.name}}</div>
+            <div style="font-size: 16px; color: #008751;">{{e.big}}</div>
+          </div>
+          <div style="font-size: 16px; color: #008751; line-height: 1.4; text-wrap: pretty;">{{e.text}}</div>
+        </div>
+      </div>
+    </sc-for>
+
+    <div style="margin-top: auto; border-top: 4px solid #008751; padding-top: 10px; font-size: 16px; color: #00E436; line-height: 1.4;">THE MAP SCREEN RUNS 1. THE RADIO RUNS 2. THAT GAP IS THE GAME.</div>
+
+  </div>
+
+</div>
+</x-dc>
+<script data-dc-script data-props='{"$preview":{"width":512,"height":512}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      entries: [
+        { n: '1', name: 'DIJKSTRA', big: 'O(E LOG V)', text: 'MAP SCREEN. CHEAPEST ROUTE BY LINK COST.' },
+        { n: '2', name: 'MANAGED FLOOD', big: 'O(N)', text: 'THE REAL RADIO. NO ROUTES, JUST REBROADCAST.' },
+        { n: '3', name: 'MIN-HEAP', big: 'O(LOG N)', text: 'THE QUEUE DIJKSTRA POPS THE NEXT NODE FROM.' },
+        { n: '4', name: 'BFS', big: 'O(V+E)', text: 'HOP RINGS. ALL NODES WITHIN TTL, COST IGNORED.' },
+        { n: '5', name: 'DEDUPE SET', big: 'O(1)', text: 'PACKET ID SEEN BEFORE? DROP IT. NO LOOPS.' },
+        { n: '6', name: 'NEXT-HOP', big: 'O(1)', text: 'NEWER FIRMWARE. REMEMBER WHO RELAYED, ASK THEM.' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

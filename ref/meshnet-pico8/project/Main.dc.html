@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&display=swap">
+  <style>
+    body { margin: 0; background: #000000; font-family: 'Silkscreen', ui-monospace, monospace; -webkit-font-smoothing: none; }
+    button { font-family: 'Silkscreen', ui-monospace, monospace; cursor: pointer; }
+    a { color: #00E436; } a:hover { color: #008751; }
+  </style>
+</helmet>
+<div style="width: 512px; height: 512px; box-sizing: border-box; background: #000000; position: relative; overflow: hidden;">
+
+  <div style="position: absolute; left: 0; top: 0; width: 512px; height: 40px; box-sizing: border-box; border-bottom: 4px solid #008751; display: flex; align-items: center; justify-content: space-between; padding: 0 12px;">
+    <div style="font-size: 16px; color: #00E436;">NET MAP <span style="color: #008751;">// DIJKSTRA</span></div>
+    <div style="font-size: 16px; color: #008751;">HOP LIMIT {{hopLimit}}</div>
+  </div>
+
+  <div style="position: absolute; left: 0; top: 40px; width: 512px; height: 340px;">
+    <svg width="512" height="340" viewBox="0 0 512 340" shape-rendering="crispEdges" style="position: absolute; left: 0; top: 0;">
+      <defs>
+        <pattern id="dots" width="64" height="64" patternUnits="userSpaceOnUse">
+          <rect x="0" y="0" width="4" height="4" fill="#008751"></rect>
+        </pattern>
+      </defs>
+      <rect x="0" y="0" width="512" height="340" fill="url(#dots)"></rect>
+
+      <line x1="48" y1="170" x2="210" y2="292" stroke="#008751" stroke-width="4" stroke-dasharray="8 8"></line>
+      <line x1="150" y1="60" x2="356" y2="72" stroke="#008751" stroke-width="4" stroke-dasharray="8 8"></line>
+      <line x1="250" y1="186" x2="356" y2="72" stroke="#008751" stroke-width="4"></line>
+      <line x1="356" y1="72" x2="452" y2="214" stroke="#008751" stroke-width="4"></line>
+      <line x1="210" y1="292" x2="452" y2="214" stroke="#008751" stroke-width="4"></line>
+
+      <line x1="48" y1="170" x2="150" y2="60" stroke="#00E436" stroke-width="4"></line>
+      <line x1="150" y1="60" x2="250" y2="186" stroke="#00E436" stroke-width="4"></line>
+      <line x1="250" y1="186" x2="452" y2="214" stroke="#00E436" stroke-width="4"></line>
+
+      <path d="M4 166 L16 166 L16 158 L28 170 L16 182 L16 174 L4 174 Z" fill="#00E436"></path>
+    </svg>
+
+    <div style="position: absolute; left: 420px; top: 182px; width: 64px; height: 64px; box-sizing: border-box; border: 4px solid #008751; clip-path: polygon(25% 0, 75% 0, 100% 25%, 100% 75%, 75% 100%, 25% 100%, 0 75%, 0 25%);"></div>
+
+    <div style="position: absolute; left: 99px; top: 115px; transform: translate(-50%, -50%); background: #000000; padding: 0 4px; font-size: 16px; color: #00E436;">10</div>
+    <div style="position: absolute; left: 123px; top: 239px; transform: translate(-50%, -50%); background: #000000; padding: 0 4px; font-size: 16px; color: #008751;">15</div>
+    <div style="position: absolute; left: 253px; top: 58px; transform: translate(-50%, -50%); background: #000000; padding: 0 4px; font-size: 16px; color: #008751;">15</div>
+    <div style="position: absolute; left: 208px; top: 115px; transform: translate(-50%, -50%); background: #000000; padding: 0 4px; font-size: 16px; color: #00E436;">12</div>
+    <div style="position: absolute; left: 311px; top: 121px; transform: translate(-50%, -50%); background: #000000; padding: 0 4px; font-size: 16px; color: #008751;">1</div>
+    <div style="position: absolute; left: 351px; top: 216px; transform: translate(-50%, -50%); background: #000000; padding: 0 4px; font-size: 16px; color: #00E436;">2</div>
+    <div style="position: absolute; left: 412px; top: 103px; transform: translate(-50%, -50%); background: #000000; padding: 0 4px; font-size: 16px; color: #008751;">5</div>
+    <div style="position: absolute; left: 330px; top: 238px; transform: translate(-50%, -50%); background: #000000; padding: 0 4px; font-size: 16px; color: #008751;">10</div>
+
+    <div style="position: absolute; left: 24px; top: 202px; font-size: 16px; color: #008751;">YOU</div>
+    <div style="position: absolute; left: 424px; top: 252px; font-size: 16px; color: #00E436;">MIRA</div>
+
+    <div style="position: absolute; left: 300px; top: 268px; font-size: 16px; color: #008751;">KM PER LINK</div>
+    <div style="position: absolute; left: 300px; top: 292px; font-size: 16px; color: #008751;">BRIGHT = BEST ROUTE</div>
+
+    <sc-for list="{{nodes}}" as="n" hint-placeholder-count="6">
+      <div style="position: absolute; left: {{n.dleft}}px; top: {{n.dtop}}px; width: 80px; text-align: center; font-size: 16px; color: {{n.dcolor}};"><span style="background: #000000; padding: 0 4px;">{{n.dtext}}</span></div>
+    </sc-for>
+
+    <sc-for list="{{nodes}}" as="n" hint-placeholder-count="6">
+      <button onClick="{{n.pick}}" aria-label="{{n.aria}}" style="position: absolute; left: {{n.left}}px; top: {{n.top}}px; width: 48px; height: 48px; padding: 0; margin: 0; background: transparent; border: 0;">
+        <sc-if value="{{n.selected}}" hint-placeholder-val="{{ false }}">
+          <div style="position: absolute; left: 0; top: 0; width: 48px; height: 48px; box-sizing: border-box; border: 4px solid #00E436; clip-path: polygon(25% 0, 75% 0, 100% 25%, 100% 75%, 75% 100%, 25% 100%, 0 75%, 0 25%);"></div>
+        </sc-if>
+        <div style="position: absolute; left: 8px; top: 8px; width: 32px; height: 32px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; font-size: 16px; clip-path: polygon(25% 0, 75% 0, 100% 25%, 100% 75%, 75% 100%, 25% 100%, 0 75%, 0 25%); background: {{n.bg}}; border: 4px solid {{n.bc}}; color: {{n.fg}};">{{n.label}}</div>
+      </button>
+    </sc-for>
+  </div>
+
+  <div style="position: absolute; left: 0; top: 380px; width: 512px; height: 132px; box-sizing: border-box; border-top: 4px solid #008751; padding: 12px; display: flex; flex-direction: column; gap: 8px;">
+    <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px;">
+      <div style="font-size: 24px; color: #00E436;">{{sel.name}}</div>
+      <div style="font-size: 16px; color: #000000; background: #008751; padding: 2px 8px;">{{sel.status}}</div>
+    </div>
+    <div style="display: flex; gap: 16px; font-size: 16px; color: #008751;">
+      <div>{{sel.role}}</div>
+      <div>SNR {{sel.snr}}</div>
+      <div>BAT {{sel.bat}}</div>
+      <div>LINKS {{sel.links}}</div>
+    </div>
+    <div style="font-size: 16px; color: #00E436; line-height: 1.5; text-wrap: pretty;">{{sel.obj}}</div>
+    <div style="margin-top: auto; display: flex; align-items: center; justify-content: space-between; gap: 16px; font-size: 16px;">
+      <div style="color: #00E436;">PATH {{sel.path}} &nbsp;COST {{sel.dist}}</div>
+      <div style="color: #008751;">Z PING</div>
+    </div>
+  </div>
+
+</div>
+</x-dc>
+<script data-dc-script data-props='{"hopLimit":{"editor":"int","default":3,"min":1,"max":7,"section":"Rules"},"$preview":{"width":512,"height":512}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { picked: 'A' };
+  }
+  renderVals() {
+    var data = [
+      { id: 'A', label: 'A', cx: 48, cy: 170, dtop: 126, name: 'HOME', role: 'ROUTER', status: 'ONLINE', snr: '--', bat: '100%', links: 2, dist: 0, path: 'A', route: true, obj: 'YOUR NODE. SOLAR, ALWAYS ON. EVERY PACKET YOU SEND STARTS HERE.' },
+      { id: 'B', label: 'B', cx: 150, cy: 60, dtop: 16, name: 'HILL', role: 'REPEATER', status: 'ONLINE', snr: '-7DB', bat: '62%', links: 3, dist: 10, path: 'A&gt;B', route: true, obj: 'LAST CONFIRMED HOP. IT RELAYED HER 19:22 MESSAGE TO YOU.' },
+      { id: 'C', label: 'C', cx: 210, cy: 292, dtop: 248, name: 'FARM', role: 'CLIENT', status: 'WEAK', snr: '-14DB', bat: '45%', links: 2, dist: 15, path: 'A&gt;C', route: false, obj: 'SENDS ITS OWN DATA, NEVER RELAYS YOURS. A DEAD END FOR HER.' },
+      { id: 'D', label: 'D', cx: 250, cy: 186, dtop: 142, name: 'TOWER', role: 'ROUTER', status: 'DOWN', snr: '-5DB', bat: '88%', links: 4, dist: 22, path: 'A&gt;B&gt;D', route: true, obj: 'THE HUB. IT WENT QUIET AT 19:26, WHICH IS WHY SHE HAS NO ROUTE.' },
+      { id: 'E', label: 'E', cx: 452, cy: 214, dtop: 154, name: 'MIRA', role: 'TRACKER', status: 'DOWN', snr: '-11DB', bat: '41%', links: 3, dist: 24, path: 'A&gt;B&gt;D&gt;E', route: true, obj: 'HER HANDHELD. 24 KM OF LINKS AWAY, 3 HOPS IF TOWER WAKES UP.' },
+      { id: 'F', label: 'F', cx: 356, cy: 72, dtop: 28, name: 'RIDGE', role: 'REPEATER', status: 'DOWN', snr: '-3DB', bat: '30%', links: 3, dist: 23, path: 'A&gt;B&gt;D&gt;F', route: false, obj: 'THE NODE SHE CAN SEE FROM WHERE SHE STANDS. PANEL UNDER SNOW.' }
+    ];
+    var skin = {
+      ONLINE: { bg: '#00E436', fg: '#000000', bc: '#00E436' },
+      WEAK: { bg: '#008751', fg: '#00E436', bc: '#008751' },
+      DOWN: { bg: '#000000', fg: '#008751', bc: '#008751' }
+    };
+    var self = this;
+    var nodes = data.map(function (n) {
+      var s = skin[n.status];
+      return {
+        id: n.id, label: n.label, name: n.name, role: n.role, status: n.status,
+        snr: n.snr, bat: n.bat, links: n.links, obj: n.obj,
+        dist: n.dist, path: n.path,
+        bg: s.bg, fg: s.fg, bc: s.bc,
+        left: n.cx - 24, top: n.cy - 24,
+        dleft: n.cx - 40, dtop: n.dtop,
+        dtext: 'd' + n.dist,
+        dcolor: n.route ? '#00E436' : '#008751',
+        selected: self.state.picked === n.id,
+        aria: n.name + ' node',
+        pick: function () { self.setState({ picked: n.id }); }
+      };
+    });
+    var sel = nodes.filter(function (n) { return n.selected; })[0] || nodes[0];
+    return { nodes: nodes, sel: sel, hopLimit: this.props.hopLimit != null ? this.props.hopLimit : 3 };
+  }
+}
+</script>
+</body>
+</html>

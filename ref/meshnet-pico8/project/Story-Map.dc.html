@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Silkscreen:wght@400;700&display=swap">
+  <style>
+    body { margin: 0; background: #000000; font-family: 'Silkscreen', ui-monospace, monospace; -webkit-font-smoothing: none; }
+    button { font-family: 'Silkscreen', ui-monospace, monospace; cursor: pointer; }
+    a { color: #00E436; } a:hover { color: #008751; }
+  </style>
+</helmet>
+<div style="width: 512px; height: 512px; box-sizing: border-box; background: #000000; position: relative; overflow: hidden;">
+
+  <div style="position: absolute; left: 0; top: 0; width: 512px; height: 40px; box-sizing: border-box; border-bottom: 4px solid #008751; display: flex; align-items: center; justify-content: space-between; padding: 0 12px;">
+    <div style="font-size: 16px; color: #00E436;">STORY MAP <span style="color: #008751;">// 4 OF 9 SEEN</span></div>
+    <div style="font-size: 16px; color: #008751;">NIGHT 1</div>
+  </div>
+
+  <div style="position: absolute; left: 0; top: 40px; width: 512px; height: 340px;">
+    <svg width="512" height="340" viewBox="0 0 512 340" shape-rendering="crispEdges" style="position: absolute; left: 0; top: 0;">
+      <defs>
+        <pattern id="dots3" width="64" height="64" patternUnits="userSpaceOnUse">
+          <rect x="0" y="0" width="4" height="4" fill="#008751"></rect>
+        </pattern>
+      </defs>
+      <rect x="0" y="0" width="512" height="340" fill="url(#dots3)"></rect>
+
+      <line x1="48" y1="180" x2="144" y2="268" stroke="#008751" stroke-width="4"></line>
+      <line x1="144" y1="268" x2="240" y2="160" stroke="#008751" stroke-width="4"></line>
+      <line x1="144" y1="268" x2="240" y2="300" stroke="#008751" stroke-width="4"></line>
+      <line x1="240" y1="300" x2="344" y2="216" stroke="#008751" stroke-width="4"></line>
+      <line x1="240" y1="48" x2="344" y2="104" stroke="#008751" stroke-width="4" stroke-dasharray="8 8"></line>
+      <line x1="344" y1="104" x2="448" y2="160" stroke="#008751" stroke-width="4"></line>
+      <line x1="344" y1="216" x2="448" y2="160" stroke="#008751" stroke-width="4"></line>
+      <line x1="240" y1="160" x2="344" y2="104" stroke="#008751" stroke-width="4"></line>
+
+      <line x1="48" y1="180" x2="144" y2="96" stroke="#00E436" stroke-width="4"></line>
+      <line x1="144" y1="96" x2="240" y2="160" stroke="#00E436" stroke-width="4"></line>
+      <line x1="240" y1="160" x2="344" y2="216" stroke="#00E436" stroke-width="4"></line>
+      <line x1="144" y1="96" x2="240" y2="48" stroke="#008751" stroke-width="4" stroke-dasharray="8 8"></line>
+
+      <path d="M4 176 L16 176 L16 168 L28 180 L16 192 L16 184 L4 184 Z" fill="#00E436"></path>
+    </svg>
+
+    <div style="position: absolute; left: 82px; top: 126px; transform: translate(-50%, -50%); background: #000000; padding: 0 4px; font-size: 16px; color: #00E436;">WAIT</div>
+    <div style="position: absolute; left: 196px; top: 118px; transform: translate(-50%, -50%); background: #000000; padding: 0 4px; font-size: 16px; color: #00E436;">WALK</div>
+    <div style="position: absolute; left: 306px; top: 176px; transform: translate(-50%, -50%); background: #000000; padding: 0 4px; font-size: 16px; color: #00E436;">TRUTH</div>
+    <div style="position: absolute; left: 186px; top: 54px; transform: translate(-50%, -50%); background: #000000; padding: 0 4px; font-size: 16px; color: #008751;">PUSH ON</div>
+    <div style="position: absolute; left: 92px; top: 236px; transform: translate(-50%, -50%); background: #000000; padding: 0 4px; font-size: 16px; color: #008751;">SLEEP</div>
+
+    <div style="position: absolute; left: 8px; top: 304px; font-size: 16px; color: #008751;">BRIGHT = THE BRANCH YOU TOOK</div>
+
+    <sc-for list="{{nodes}}" as="n" hint-placeholder-count="9">
+      <button onClick="{{n.pick}}" aria-label="{{n.aria}}" style="position: absolute; left: {{n.left}}px; top: {{n.top}}px; width: 48px; height: 48px; padding: 0; margin: 0; background: transparent; border: 0;">
+        <sc-if value="{{n.selected}}" hint-placeholder-val="{{ false }}">
+          <div style="position: absolute; left: 0; top: 0; width: 48px; height: 48px; box-sizing: border-box; border: 4px solid #00E436; clip-path: polygon(25% 0, 75% 0, 100% 25%, 100% 75%, 75% 100%, 25% 100%, 0 75%, 0 25%);"></div>
+        </sc-if>
+        <div style="position: absolute; left: 6px; top: 6px; width: 36px; height: 36px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; font-size: 16px; clip-path: polygon(25% 0, 75% 0, 100% 25%, 100% 75%, 75% 100%, 25% 100%, 0 75%, 0 25%); background: {{n.bg}}; border: 4px solid {{n.bc}}; color: {{n.fg}};">{{n.label}}</div>
+      </button>
+    </sc-for>
+  </div>
+
+  <div style="position: absolute; left: 0; top: 380px; width: 512px; height: 132px; box-sizing: border-box; border-top: 4px solid #008751; padding: 12px; display: flex; flex-direction: column; gap: 8px;">
+    <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px;">
+      <div style="font-size: 24px; color: #00E436;">{{sel.name}}</div>
+      <div style="font-size: 16px; color: #000000; background: #008751; padding: 2px 8px;">{{sel.state}}</div>
+    </div>
+    <div style="font-size: 16px; color: #008751;">{{sel.via}}</div>
+    <div style="font-size: 16px; color: #00E436; line-height: 1.5; text-wrap: pretty;">{{sel.note}}</div>
+  </div>
+
+</div>
+</x-dc>
+<script data-dc-script data-props='{"$preview":{"width":512,"height":512}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { picked: 'S8' };
+  }
+  renderVals() {
+    var self = this;
+    var data = [
+      { id: 'S1', cx: 48, cy: 180, name: 'FIRST CONTACT', state: 'SEEN', via: 'NIGHT 1 - 19:04', note: 'SHE PINGS A CHANNEL SHE DOES NOT KNOW YOU ARE ON.' },
+      { id: 'S2', cx: 144, cy: 96, name: 'THE DEAD RIDGE', state: 'SEEN', via: 'VIA WAIT', note: 'YOU TOLD HER TO HOLD STILL AND LET THE MESH FIND A ROUTE.' },
+      { id: 'S3', cx: 144, cy: 268, name: 'THE LONG SLEEP', state: 'UNSEEN', via: 'VIA SLEEP', note: 'THE BRANCH WHERE YOU CLOSE THE APP FIRST. SHE WAKES ALONE.' },
+      { id: 'X1', cx: 240, cy: 48, name: 'LOST CONTACT', state: 'DEAD END', via: 'VIA PUSH ON', note: 'SHE WALKED OUT OF RANGE MID-SENTENCE. NO ACK EVER CAME.' },
+      { id: 'S5', cx: 240, cy: 160, name: 'TWO ROUTES', state: 'SEEN', via: 'VIA WALK', note: 'TOWER 12 KM UPHILL OR FARM 15 KM DOWNHILL. SHE ASKS YOU TO PICK.' },
+      { id: 'S6', cx: 240, cy: 300, name: 'THE FARM DOG', state: 'UNSEEN', via: 'VIA SLEEP', note: 'ONLY REACHABLE FROM THE BRANCH YOU HAVE NOT PLAYED.' },
+      { id: 'S7', cx: 344, cy: 104, name: 'TOWER CLIMB', state: 'UNSEEN', via: 'VIA TOWER', note: 'THE SHORT ROUTE. COSTS HER BATTERY SHE MAY NOT HAVE.' },
+      { id: 'S8', cx: 344, cy: 216, name: 'FARM GATE', state: 'YOU ARE HERE', via: 'VIA WAIT &gt; WALK &gt; TRUTH', note: 'SHE IS AT THE GATE, 41% BATTERY, WAITING FOR YOUR NEXT PACKET.' },
+      { id: 'S9', cx: 448, cy: 160, name: 'DAWN', state: 'LOCKED', via: 'BOTH ROUTES MEET HERE', note: 'NIGHT 1 ENDS HERE, WHICHEVER WAY YOU SENT HER.' }
+    ];
+    var nodes = data.map(function (n) {
+      var seen = n.state === 'SEEN' || n.state === 'YOU ARE HERE';
+      var dead = n.state === 'DEAD END';
+      var bg = seen ? '#00E436' : '#000000';
+      var fg = seen ? '#000000' : '#008751';
+      var bc = seen ? '#00E436' : '#008751';
+      return {
+        id: n.id, label: n.id, name: n.name, state: n.state, via: n.via, note: n.note,
+        left: n.cx - 24, top: n.cy - 24,
+        bg: bg, fg: dead ? '#00E436' : fg, bc: bc,
+        selected: self.state.picked === n.id,
+        aria: n.name + ' scene',
+        pick: function () { self.setState({ picked: n.id }); }
+      };
+    });
+    var sel = nodes.filter(function (n) { return n.selected; })[0] || nodes[0];
+    return { nodes: nodes, sel: sel };
+  }
+}
+</script>
+</body>
+</html>

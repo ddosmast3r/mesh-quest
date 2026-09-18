@@ -19,6 +19,7 @@ end
 function scenes.settings.toggle_selected()
  local item=content.setting_items[game.setting_selection]
  game.settings[item.key]=not game.settings[item.key]
+ if item.key=="sound" then audio.refresh() end
  audio.play(2)
 end
 

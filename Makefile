@@ -7,6 +7,9 @@ STORY_OUTPUT := $(CURDIR)/src/story_intro.lua
 STORY_COMPILER := $(CURDIR)/tools/build_story.py
 STORY_ART_SOURCE := $(CURDIR)/ref/scene_0
 STORY_ART_COMPILER := $(CURDIR)/tools/build_story_art.py
+STORY_PLACEHOLDER_SOURCE := $(CURDIR)/ref/scene_0/placeholders
+STORY_PLACEHOLDER_OUTPUT := $(CURDIR)/src/story_placeholders.lua
+STORY_PLACEHOLDER_COMPILER := $(CURDIR)/tools/build_story_placeholders.py
 MUSIC_COMPILER := $(CURDIR)/tools/build_music.py
 GAME_SOURCE := $(CURDIR)/mesh_game.p8
 GAME_COMPILER := $(CURDIR)/tools/build_game_cart.py
@@ -18,7 +21,7 @@ RUN_GAME_CART := $(RUN_DIR)/mesh_game.p8
 RUN_BUILD_DIR := $(RUN_DIR)/build
 BUILD_DIR := $(CURDIR)/build
 
-.PHONY: play play-game web check story story-art music game stage
+.PHONY: play play-game web check story story-art story-placeholders music game stage
 
 check:
 	@test -x "$(PICO8)" || (echo "PICO-8 not found at $(PICO8)" && exit 1)
@@ -29,13 +32,16 @@ story:
 story-art:
 	@python3 "$(STORY_ART_COMPILER)" "$(STORY_ART_SOURCE)" "$(CART)"
 
+story-placeholders:
+	@python3 "$(STORY_PLACEHOLDER_COMPILER)" "$(STORY_PLACEHOLDER_SOURCE)" "$(STORY_PLACEHOLDER_OUTPUT)"
+
 music:
 	@python3 "$(MUSIC_COMPILER)" "$(CART)"
 
 game:
 	@python3 "$(GAME_COMPILER)" "$(GAME_SOURCE)" "$(CART)" "$(SHOP_SOURCE)" "$(SHOP_LUA)" "$(RUN_GAME_CART)"
 
-stage: story story-art music
+stage: story story-placeholders story-art music
 	@mkdir -p "$(RUN_DIR)/src/scenes"
 	@awk '{if ($$0=="#include src/main.lua") print "#include src/dev.lua"; print}' "$(CART)" > "$(RUN_CART)"
 	@python3 "$(GAME_COMPILER)" "$(GAME_SOURCE)" "$(CART)" "$(SHOP_SOURCE)" "$(SHOP_LUA)" "$(RUN_GAME_CART)"

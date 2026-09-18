@@ -84,6 +84,23 @@ def convert(reference: Path, width: int, height: int, mode: str) -> list[list[in
     return pixels
 
 
+def convert_frame(reference: Path) -> list[list[int]]:
+    image = Image.open(reference).convert("RGB").resize(
+        (64, 64), Image.Resampling.LANCZOS
+    )
+    canvas = Image.new("RGB", (128, 64))
+    canvas.paste(image, (32, 0))
+    pixels: list[list[int]] = []
+    for y in range(64):
+        row: list[int] = []
+        for x in range(128):
+            red, green, blue = canvas.getpixel((x, y))
+            dither = BAYER_4X4[y % 4][x % 4] - 7.5
+            row.append(quantize_sunlight(red, green, blue, dither))
+        pixels.append(row)
+    return pixels
+
+
 def patch_cartridge(cartridge: Path, reference_dir: Path) -> None:
     lines = cartridge.read_text(encoding="ascii").splitlines()
     gfx_header = lines.index("__gfx__")
@@ -100,6 +117,19 @@ def patch_cartridge(cartridge: Path, reference_dir: Path) -> None:
                 gfx[sprite_y + y][sprite_x + x] = format(pixels[y][x], "x")
 
     lines[gfx_header + 1:gff_header] = ["".join(row) for row in gfx]
+
+    # The third 128x64 frame fits exactly in the cartridge's 4096-byte map.
+    frame = convert_frame(reference_dir / "slide_3.png")
+    packed = [
+        frame[y][x] | frame[y][x + 1] << 4
+        for y in range(64) for x in range(0, 128, 2)
+    ]
+    map_header = lines.index("__map__")
+    sfx_header = lines.index("__sfx__")
+    lines[map_header + 1:sfx_header] = [
+        "".join(f"{byte:02x}" for byte in packed[offset:offset + 128])
+        for offset in range(0, len(packed), 128)
+    ]
     cartridge.write_text("\n".join(lines) + "\n", encoding="ascii")
 
 

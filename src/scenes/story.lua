@@ -29,7 +29,9 @@ end
 function scenes.story.load_slide()
  local scene=scenes.story
  scene.slide=scene.data.slides[scene.slide_index]
- scene.lines=ui.cyr_wrap(scene.slide.text,112)
+ scene.pages=split(scene.slide.text,"|",false)
+ scene.page=1
+ scene.lines=ui.cyr_wrap(scene.pages[scene.page],112)
  scene.phase="fade_in"
  scene.phase_time=0
  scene.ready_time=0
@@ -43,7 +45,6 @@ function scenes.story.prepare_page()
  local scene=scenes.story
  scene.visible=0
  scene.total=0
-
  for index=1,#scene.lines do
   scene.total+=#scene.lines[index]
   if index<#scene.lines then
@@ -110,6 +111,14 @@ end
 
 function scenes.story.advance()
  local scene=scenes.story
+ if scene.page<#scene.pages then
+  scene.page+=1
+  scene.lines=ui.cyr_wrap(scene.pages[scene.page],112)
+  scene.phase="typing"
+  scene.ready_time=0
+  scene.prepare_page()
+  return
+ end
  scene.phase="fade_out"
  scene.phase_time=0
  scene.visible=0

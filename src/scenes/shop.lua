@@ -57,8 +57,8 @@ function scenes.shop.enter()
  scene.close_line=0
  scene.description_line=0
  scene.saw_address=false
- scene.message=nil
- scene.message_time=0
+ scene.message="cpt po, npk nfztastjl, oaep tpmDlp oahatD luqjtD."
+ scene.message_time=300
 end
 
 function scenes.shop.update()

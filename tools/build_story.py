@@ -23,7 +23,7 @@ UNICODE_REPLACEMENTS = {
 }
 
 HEADER = re.compile(r"^@([a-z0-9_]+)(?:\s+(.*))?$")
-SAFE_ASCII = set(" 0123456789.,!?-:;()/+%")
+SAFE_ASCII = set(" 0123456789.,!?-:;()/+%|")
 
 
 def encode_text(text: str, source: Path) -> str:

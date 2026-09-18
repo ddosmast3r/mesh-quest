@@ -45,7 +45,7 @@ function scenes.logo.draw()
  cls(color.black)
  scenes.logo.draw_carrier(y,progress)
  ui.draw_logo(x,y,reveal_width)
- scenes.logo.draw_reveal_edge(x,y,reveal_width,progress)
+ scenes.logo.draw_reveal_edge(x,y,reveal_width)
  scenes.logo.draw_glitch(x,y,reveal_width,progress)
 end
 
@@ -61,7 +61,7 @@ function scenes.logo.draw_carrier(y,progress)
  end
 end
 
-function scenes.logo.draw_reveal_edge(x,y,reveal_width,progress)
+function scenes.logo.draw_reveal_edge(x,y,reveal_width)
  if reveal_width<=0 or reveal_width>=120 then
   return
  end

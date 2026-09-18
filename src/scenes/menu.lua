@@ -4,7 +4,6 @@ scenes.menu={time=0}
 
 function scenes.menu.enter()
  scenes.menu.time=0
- game.notice_frames=0
  scenes.menu.items={}
  add(
   scenes.menu.items,
@@ -34,9 +33,10 @@ end
 function scenes.menu.activate(item)
  audio.play(item.sfx)
 
- if item.notice then
-  game.notice_text=item.notice
-  game.notice_frames=90
+ if item.action=="new_game" then
+  game.start_new_game()
+ elseif item.action=="continue" then
+  game.continue_game()
  elseif item.target then
   game.change_scene(item.target)
  end
@@ -52,7 +52,6 @@ function scenes.menu.draw()
  mesh.draw_menu(scenes.menu.time,0)
  clip()
  scenes.menu.draw_items()
- scenes.menu.draw_notice()
 end
 
 function scenes.menu.draw_items()
@@ -72,19 +71,5 @@ function scenes.menu.draw_items()
   end
 
   ui.cyr_text(item.label,11,y+1,text_color)
-
-  if item.enabled==false then
-   print("--",116,y+1,text_color)
-  end
  end
-end
-
-function scenes.menu.draw_notice()
- if game.notice_frames<=0 then
-  return
- end
-
- rectfill(8,78,119,91,color.black)
- rect(8,78,119,91,color.green)
- ui.cyr_centered(game.notice_text,82,color.lime)
 end

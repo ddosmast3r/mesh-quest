@@ -6,41 +6,19 @@ function ui.centered(text,y,text_color)
  print(text,64-#text*2,y,text_color)
 end
 
--- Variable-width 3-5 px Cyrillic, matched to PICO-8's compact font.
--- ASCII aliases keep the cartridge source compatible with PICO-8.
-ui.cyr_glyphs={
- a={"010","101","111","101","101"}, -- а
- c={"011","100","100","100","011"}, -- с
- d={"0110","1010","1010","1111","1001"}, -- д
- e={"111","100","110","100","111"}, -- е
- g={"111","100","100","100","100"}, -- г
- i={"1001","1001","1011","1101","1001"}, -- и
- j={"1001","0110","1111","0110","1001"}, -- ж
- k={"101","110","100","110","101"}, -- к
- l={"0111","0101","0101","1001","1001"}, -- л
- m={"1001","1111","1111","1001","1001"}, -- м
- n={"101","101","111","101","101"}, -- н
- o={"010","101","101","101","010"}, -- о
- p={"111","101","101","101","101"}, -- п
- q={"011","101","011","101","101"}, -- я
- r={"110","101","110","100","100"}, -- р
- s={"100","100","110","101","110"}, -- ь
- t={"111","010","010","010","010"}, -- т
- u={"1010","1101","1101","1101","1010"}, -- ю
- v={"110","101","110","101","110"}, -- в
- w={"101","101","101","101","111"}, -- ш
- x={"1001","1001","1101","1011","1101"}, -- ы
- f={"101","101","010","010","100"}, -- у
- y={"1001","1001","1011","1101","1001"}  -- й
-}
+-- Five packed row masks per glyph. Keeping the font in strings makes the
+-- complete Russian alphabet cost a handful of code tokens instead of ~700.
+ui.cyr_widths="333343343443443333333534335443343"
+ui.cyr_rows="257557465665656744446::?9746477464796?696121699;=999;=956465755999??99557552555275555656443444372222552244>E>455255:::?15571155557EEEO1<465699=;=4465661316:===:35355"
 
 function ui.cyr_character_width(character)
  if character==" " then
   return 3
  end
-
- local glyph=ui.cyr_glyphs[character]
- return glyph and #glyph[1] or 3
+ local code=ord(character)
+ local index=code>=97 and code<=122 and code-96 or
+  code>=65 and code<=71 and code-38
+ return index and tonum(sub(ui.cyr_widths,index,index)) or 3
 end
 
 function ui.cyr_width(text)
@@ -57,29 +35,96 @@ function ui.cyr_centered(text,y,text_color)
  ui.cyr_text(text,64-flr(ui.cyr_width(text)/2),y,text_color)
 end
 
+function ui.cyr_glyph(character,x,y,text_color)
+ -- Braces are compact escape codes for the two Latin letters used in dialogue.
+ if character=="{" then
+  print("p",x,y,text_color)
+  return
+ elseif character=="}" then
+  print("t",x,y,text_color)
+  return
+ end
+ local code=ord(character)
+ local index=code>=97 and code<=122 and code-96 or
+  code>=65 and code<=71 and code-38
+ local width=index and tonum(sub(ui.cyr_widths,index,index))
+ if width then
+  for row=1,5 do
+   local bits=ord(ui.cyr_rows,(index-1)*5+row)-48
+   for column=1,width do
+    if band(bits,2^(width-column))>0 then
+     pset(x+column-1,y+row-1,text_color)
+    end
+   end
+  end
+  if character=="k" then
+   pset(x+1,y-1,text_color)
+   pset(x+2,y-1,text_color)
+  elseif character=="g" then
+   pset(x,y-1,text_color)
+   pset(x+2,y-1,text_color)
+  end
+ elseif character~=" " and character~="|" then
+  print(character,x,y,text_color)
+ end
+end
+
 function ui.cyr_text(text,x,y,text_color)
  for index=1,#text do
   local character=sub(text,index,index)
-  local glyph=ui.cyr_glyphs[character]
-
-  if glyph then
-   for row=1,#glyph do
-    for column=1,#glyph[row] do
-     if sub(glyph[row],column,column)=="1" then
-      pset(x+column-1,y+row-1,text_color)
-     end
-    end
-   end
-
-   -- A two-pixel breve distinguishes й from и without making it taller.
-   if character=="y" then
-    pset(x+1,y-1,text_color)
-    pset(x+2,y-1,text_color)
-   end
-  end
-
+  ui.cyr_glyph(character,x,y,text_color)
   x+=ui.cyr_character_width(character)+1
  end
+end
+
+function ui.cyr_fx(text,x,y,text_color,fx,time)
+ for index=1,#text do
+  local character=sub(text,index,index)
+  local dx,dy,draw_color=0,0,text_color
+  if fx=="glitch" and time%38<5 and (index+flr(time/5))%3==0 then
+   ui.cyr_glyph(character,x-1,y,color.green)
+   dx=index%2==0 and 2 or -2
+   draw_color=color.lime
+  end
+  ui.cyr_glyph(character,x+dx,y+dy,draw_color)
+  x+=ui.cyr_character_width(character)+1
+ end
+end
+
+function ui.cyr_wrap(text,max_width)
+ local lines={}
+ local text_line=""
+ local word=""
+
+ for index=1,#text+1 do
+  local character=index<=#text and sub(text,index,index) or " "
+
+  if character==" " or character=="|" then
+   if word~="" then
+    local candidate=text_line=="" and word or text_line.." "..word
+    if text_line~="" and ui.cyr_width(candidate)>max_width then
+     add(lines,text_line)
+     text_line=word
+    else
+     text_line=candidate
+    end
+    word=""
+   end
+
+   if character=="|" then
+    add(lines,text_line)
+    text_line=""
+   end
+  else
+   word=word..character
+  end
+ end
+
+ if text_line~="" then
+  add(lines,text_line)
+ end
+
+ return lines
 end
 
 function ui.header(title,section,right_text)
@@ -94,11 +139,6 @@ function ui.header(title,section,right_text)
  end
 
  line(0,9,127,9,color.green)
-end
-
-function ui.panel(x1,y1,x2,y2)
- rectfill(x1,y1,x2,y2,color.black)
- rect(x1,y1,x2,y2,color.green)
 end
 
 function ui.draw_grid(y1,y2)
@@ -163,25 +203,6 @@ function ui.dashed_line(x1,y1,x2,y2,line_color)
     x1+(x2-x1)*amount,
     y1+(y2-y1)*amount,
     line_color
-   )
-  end
- end
-end
-
-function ui.draw_packet_icon(x,y,time)
- local bob=flr(sin(time/24)*2)
- rect(x,y+bob,x+11,y+7+bob,color.green)
- line(x,y+bob,x+5,y+4+bob,color.lime)
- line(x+11,y+bob,x+6,y+4+bob,color.lime)
-end
-
-function ui.draw_radio_wave(x,y,radius)
- if (game.clock+radius)%32<20 then
-  for angle=.57,.93,.04 do
-   pset(
-    x+cos(angle)*radius,
-    y+sin(angle)*radius,
-    color.green
    )
   end
  end

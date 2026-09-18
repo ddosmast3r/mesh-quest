@@ -16,7 +16,7 @@ content.new_game_item={
 
 content.continue_item={
  label="prodoljits",
- notice="nedoctupno",
+ notice="nedoctfpno",
  sfx=4
 }
 
@@ -31,25 +31,35 @@ content.setting_items={
  {label="map grid",key="grid"}
 }
 
--- Original ten-node menu backdrop from the first approved title screen.
+-- Stylized north-up Pyatigorsk map: city below, Mount Mashuk above.
 content.menu_nodes={
- {x=13,y=63,phase=0},
- {x=35,y=53,phase=1},
- {x=57,y=70,phase=2},
- {x=82,y=56,phase=3},
- {x=109,y=65,phase=4},
- {x=25,y=89,phase=5},
- {x=49,y=100,phase=6},
- {x=76,y=87,phase=7},
- {x=103,y=97,phase=8},
- {x=116,y=82,phase=9}
+ {x=13,y=27,label="a",name="kvartal",status="online",route=true,source=true},
+ {x=28,y=40,label="b",name="beshtau",status="online",route=true},
+ {x=40,y=61,label="c",name="center",status="online",route=true},
+ {x=55,y=78,label="d",name="tsvetnik",status="down",route=true},
+ {x=72,y=61,label="e",name="cable",status="down",route=true},
+ {x=52,y=39,label="f",name="duel",status="weak"},
+ {x=71,y=28,label="g",name="north trail",status="down"},
+ {x=110,y=66,label="h",name="proval",status="weak"},
+ {x=90,y=44,label="i",name="upper station",status="down",route=true},
+ {x=105,y=27,label="m",name="mashuk",status="down",route=true,goal=true}
 }
 
 content.menu_links={
- {1,2},{2,3},{3,4},{4,5},
- {1,6},{2,6},{3,7},{3,8},
- {4,8},{5,10},{6,7},{7,8},
- {8,9},{9,10}
+ {from=1,to=2,route=true},
+ {from=2,to=3,route=true},
+ {from=3,to=4,route=true},
+ {from=4,to=5,route=true},
+ {from=5,to=9,route=true},
+ {from=9,to=10,route=true},
+ {from=2,to=6,weak=true},
+ {from=6,to=7},
+ {from=7,to=10},
+ {from=4,to=8,weak=true},
+ {from=5,to=8},
+ {from=8,to=9},
+ {from=3,to=6},
+ {from=6,to=4}
 }
 
 content.nodes={

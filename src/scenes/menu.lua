@@ -49,7 +49,7 @@ function scenes.menu.draw()
  if game.settings.grid then
   ui.draw_grid(10,94)
  end
- mesh.draw_menu(scenes.menu.time,-8)
+ mesh.draw_menu(scenes.menu.time,0)
  clip()
  scenes.menu.draw_items()
  scenes.menu.draw_notice()
@@ -71,7 +71,7 @@ function scenes.menu.draw_items()
    print(">",3,y+1,text_color)
   end
 
-  ui.cyr_text(item.label,11,y,text_color)
+  ui.cyr_text(item.label,11,y+1,text_color)
 
   if item.enabled==false then
    print("--",116,y+1,text_color)

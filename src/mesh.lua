@@ -5,10 +5,17 @@ mesh={}
 function mesh.init()
  mesh.packets={}
  mesh.route_links={}
+ mesh.menu_route_links={}
 
  for index=1,#content.links do
   if content.links[index].route then
    add(mesh.route_links,index)
+  end
+ end
+
+ for index=1,#content.menu_links do
+  if content.menu_links[index].route then
+   add(mesh.menu_route_links,index)
   end
  end
 end
@@ -16,11 +23,12 @@ end
 function mesh.update_menu()
  local frame_in_second=flr(t()%1*60)
 
- if frame_in_second%35==0 and #mesh.packets<4 then
-  local link=content.menu_links[flr(rnd(#content.menu_links))+1]
+ if frame_in_second%35==0 and #mesh.packets<2 then
+  local route_index=mesh.menu_route_links[flr(rnd(#mesh.menu_route_links))+1]
+  local link=content.menu_links[route_index]
   add(mesh.packets,{
-   from=link[1],
-   to=link[2],
+   from=link.from,
+   to=link.to,
    progress=0,
    reversed=rnd(1)<.5
   })
@@ -38,9 +46,19 @@ function mesh.draw_menu(time,y_offset)
  y_offset=y_offset or 0
 
  for link in all(content.menu_links) do
-  local from=content.menu_nodes[link[1]]
-  local to=content.menu_nodes[link[2]]
-  line(from.x,from.y+y_offset,to.x,to.y+y_offset,color.green)
+  local from=content.menu_nodes[link.from]
+  local to=content.menu_nodes[link.to]
+  local link_color=link.route and color.lime or color.green
+
+  if link.weak then
+   ui.dashed_line(
+    from.x,from.y+y_offset,
+    to.x,to.y+y_offset,
+    link_color
+   )
+  else
+   line(from.x,from.y+y_offset,to.x,to.y+y_offset,link_color)
+  end
  end
 
  for packet in all(mesh.packets) do
@@ -57,14 +75,53 @@ function mesh.draw_menu(time,y_offset)
   pset(x-1,y,color.green)
  end
 
+ mesh.draw_mashuk(y_offset)
+
  for node in all(content.menu_nodes) do
-  local pulse=(time+node.phase*7)%70
-  local y=node.y+y_offset
-  if pulse<14 then
-   circ(node.x,y,2+flr(pulse/5),color.green)
-  end
-  pset(node.x,y,color.lime)
+  mesh.draw_menu_node(node,node.y+y_offset)
  end
+
+ mesh.draw_player_position(y_offset)
+end
+
+function mesh.draw_mashuk(y_offset)
+ -- Leave a clean gap around the goal node: it doubles as the summit.
+ line(94,36+y_offset,99,31+y_offset,color.green)
+ line(111,31+y_offset,118,36+y_offset,color.green)
+ line(97,33+y_offset,100,29+y_offset,color.lime)
+ line(110,29+y_offset,114,33+y_offset,color.lime)
+ ui.cyr_text("kvartal",3,12+y_offset,color.green)
+ ui.cyr_text("mawfk",95,12+y_offset,color.lime)
+end
+
+function mesh.draw_player_position(y_offset)
+ -- The source node is the player's home position in the Kvartal district.
+ ui.cyr_text("vx",3,35+y_offset,color.lime)
+ line(12,34+y_offset,13,32+y_offset,color.lime)
+end
+
+function mesh.draw_menu_node(node,y)
+ local fill_color=color.black
+ local border_color=color.green
+ local text_color=color.green
+
+ if node.status=="online" then
+  fill_color=color.lime
+  border_color=color.lime
+  text_color=color.black
+ elseif node.status=="weak" then
+  fill_color=color.green
+  text_color=color.lime
+ end
+
+ if node.source then
+  ui.draw_octagon_outline(node.x,y,5,color.lime)
+ elseif node.goal then
+  ui.draw_octagon_outline(node.x,y,5,color.green)
+ end
+
+ ui.draw_octagon(node.x,y,fill_color,border_color)
+ print(node.label,node.x-2,y-2,text_color)
 end
 
 function mesh.update()

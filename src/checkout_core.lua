@@ -1,4 +1,4 @@
--- State and routing for the gameplay cartridge.
+-- State and routing for the checkout cutscene cartridge.
 
 game={}
 input={}
@@ -6,29 +6,17 @@ audio={}
 
 function game.init()
  save.init()
- save.progress(1)
- srand(1337)
- game.scene_name=nil
+ save.progress(2)
+ game.scene_name="payment"
  game.clock=0
- game.setup_progress=1
  game.settings={sound=stat(6)~="mute",grid=true}
- game.change_scene("shop")
-end
-
-function game.change_scene(name)
- game.scene_name=name
- local scene=scenes[name]
+ local scene=scenes.payment
  if scene and scene.enter then scene.enter() end
 end
 
-function game.back_to_menu()
- music(-1,600)
- load("mesh_quest.p8",nil,game.settings.sound and "menu" or "menu_mute")
-end
-
-function game.open_checkout()
+function game.open_delivery()
  music(-1,300)
- load("mesh_checkout.p8",nil,game.settings.sound and "sound" or "mute")
+ load("mesh_delivery.p8",nil,game.settings.sound and "sound" or "mute")
 end
 
 function game.update()
@@ -40,6 +28,11 @@ end
 function game.draw()
  local scene=scenes[game.scene_name]
  if scene and scene.draw then scene.draw() end
+end
+
+function game.back_to_menu()
+ music(-1,600)
+ load("mesh_quest.p8",nil,game.settings.sound and "menu" or "menu_mute")
 end
 
 function input.confirm_pressed()

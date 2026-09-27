@@ -58,6 +58,7 @@ function scenes.shop.enter()
  scene.raw_y=stat(33)
  scene.buttons=stat(34)
  scene.purchased=false
+ scene.loading=nil
  scene.close_line=0
  scene.description_line=0
  scene.saw_address=false
@@ -83,6 +84,14 @@ function scenes.shop.update()
  scene.cursor_x=mid(0,scene.cursor_x,127)
  scene.cursor_y=mid(0,scene.cursor_y,127)
 
+ if scene.loading then
+  scene.loading+=1
+  if scene.loading>=90 then
+   game.open_checkout()
+   return
+  end
+ end
+
  -- Move the full-size page when the pointer reaches a screen edge.
  if scene.cursor_x<12 then scene.scroll_x-=1 end
  if scene.cursor_x>115 then scene.scroll_x+=1 end
@@ -94,14 +103,16 @@ function scenes.shop.update()
  local buttons=stat(34)
  local clicked=(band(buttons,1)>0 and band(scene.buttons,1)==0) or btnp(4)
  scene.buttons=buttons
- if clicked then
+ if clicked and not scene.loading then
   local responded=false
   local page_x=scene.cursor_x+scene.scroll_x
   local page_y=scene.cursor_y+scene.scroll_y
   if inside(page_x,page_y,shop_art.buy) then
    if not scene.purchased then
-    responded=say_once(scene,"purchased","ialai pvprnmfo")
-    audio.play(0)
+    scene.purchased=true
+    scene.loading=0
+    dismiss(scene)
+    audio.play(2)
    else
     dismiss(scene)
    end
@@ -155,4 +166,19 @@ function scenes.shop.draw()
  end
 
  spr(255,scene.cursor_x,scene.cursor_y)
+ if scene.loading then
+  local x=mid(6,scene.cursor_x+11,121)
+  local y=mid(6,scene.cursor_y+11,121)
+  local turn=flr(scene.loading/4)
+  for step=0,7 do
+   local angle=step/8
+   local phase=(step-turn)%8
+   local shade=phase==0 and 7 or phase<4 and 6 or 5
+   line(
+    x+cos(angle)*2,y+sin(angle)*2,
+    x+cos(angle)*4,y+sin(angle)*4,
+    shade
+   )
+  end
+ end
 end

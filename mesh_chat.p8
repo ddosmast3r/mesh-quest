@@ -3,10 +3,8 @@ version 42
 __lua__
 #include src/constants.lua
 #include src/save.lua
-#include src/game_content.lua
-#include src/game_core.lua
+#include src/chat_core.lua
 #include src/ui.lua
-#include src/shop_art.lua
-#include src/scenes/shop.lua
-#include src/scenes/setup.lua
+#include src/chat_art.lua
+#include src/scenes/public_chat.lua
 #include src/main.lua
